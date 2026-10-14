@@ -1,0 +1,246 @@
+{
+  "name": "Worker 3_REGISTRAR_POSTULACION",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "solicitud_id"
+            },
+            {
+              "name": "firstname"
+            },
+            {
+              "name": "lastname"
+            },
+            {
+              "name": "email"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        -32
+      ],
+      "id": "b54a41a7-ea38-4b7e-80e1-725e8f70dd66",
+      "name": "Recibir datos de postulación"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "search",
+        "limit": 1,
+        "filterGroupsUi": {
+          "filterGroupsValues": [
+            {
+              "filtersUi": {
+                "filterValues": [
+                  {
+                    "propertyName": "email|string",
+                    "value": "={{ $('Recibir datos de postulación').first().json.email }}"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        -32
+      ],
+      "id": "6ed27297-638e-4885-90e9-ba63c51146c1",
+      "name": "Search contacts",
+      "alwaysOutputData": true,
+      "credentials": {
+        "hubspotOAuth2Api": {
+          "id": "MJHMBbE4u1ewbwIY",
+          "name": "HubSpot ATRAER"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "525da8b8-4d17-48a0-923b-227dbee78f16",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        656,
+        -32
+      ],
+      "id": "4576bc07-d369-479e-8b40-002d85ffec84",
+      "name": "¿Existe contacto?"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "email": "={{ $('Recibir datos de postulación').first().json.email }}",
+        "additionalFields": {
+          "firstName": "={{ $('Recibir datos de postulación').first().json.firstname }}",
+          "lastName": "={{ $('Recibir datos de postulación').first().json.lastname }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        928,
+        -128
+      ],
+      "id": "cb8d9b76-1bfc-4565-bbd5-e118cee2941c",
+      "name": "Actualizar candidato.",
+      "credentials": {
+        "hubspotOAuth2Api": {
+          "id": "MJHMBbE4u1ewbwIY",
+          "name": "HubSpot ATRAER"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "email": "={{ $('Recibir datos de postulación').first().json.email }}",
+        "additionalFields": {
+          "firstName": "={{ $('Recibir datos de postulación').first().json.firstname }}",
+          "lastName": "={{ $('Recibir datos de postulación').first().json.lastname }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        928,
+        80
+      ],
+      "id": "c2fe3770-138b-41ff-8853-7ad6edaa6ed1",
+      "name": "Crear Contacto",
+      "credentials": {
+        "hubspotOAuth2Api": {
+          "id": "MJHMBbE4u1ewbwIY",
+          "name": "HubSpot ATRAER"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ (() => {\n  const entrada = $('Recibir datos de postulación').first().json;\n\n  return {\n    solicitud_id: entrada.solicitud_id,\n    worker: 'REGISTRAR_POSTULACION',\n    status: 'success',\n    data: {\n      estado: 'contacto_registrado',\n      contacto_id: String($json.vid ?? $json.id),\n      accion_crm: $json.isNew === true ? 'creado' : 'actualizado',\n      datos_informados:\n        'Datos recibidos del formulario: ' +\n        entrada.firstname + ' ' + entrada.lastname +\n        '. Email: ' + entrada.email,\n      datos_faltantes: [],\n      siguiente_paso:\n        'RRHH debe revisar la postulación. El registro del contacto no implica evaluación ni selección del candidato.'\n    }\n  };\n})() }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1184,
+        -32
+      ],
+      "id": "2425bab7-33e8-4ba2-8d6d-cf9e8b161272",
+      "name": "Devolver resultado postulación"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Search contacts": {
+      "main": [
+        [
+          {
+            "node": "¿Existe contacto?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Existe contacto?": {
+      "main": [
+        [
+          {
+            "node": "Actualizar candidato.",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Crear Contacto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recibir datos de postulación": {
+      "main": [
+        [
+          {
+            "node": "Search contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar candidato.": {
+      "main": [
+        [
+          {
+            "node": "Devolver resultado postulación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Contacto": {
+      "main": [
+        [
+          {
+            "node": "Devolver resultado postulación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "980fee0e-2ad7-4d82-bab9-377c323625d9",
+  "meta": {
+    "instanceId": "c356dc42d510a4af548e49698f9810d505c141393ea7491e423d2133bb09232f"
+  },
+  "nodeGroups": [],
+  "id": "IBZPPL8zNK1JKJ0k",
+  "tags": []
+}
