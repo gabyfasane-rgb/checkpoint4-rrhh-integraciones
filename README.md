@@ -84,7 +84,7 @@ La rama de error del Worker 3 fue configurada y revisada, pero no se realizó un
 - [Workflow principal](checkpoint4_gabriela_fasanella.json)
 - [Worker 1 — PERFIL_PUESTO](<Worker 1_PERFIL_PUESTO.json>)
 - [Worker 2 — PREPARAR_INGRESO](<Worker 2_PREPARAR_INGRESO.json>)
-- [Worker 3 — REGISTRAR_POSTULACION](<Worker 3_REGISTRAR_POSTULACION JSON Final.json>)
+- [Worker 3 — REGISTRAR_POSTULACION](https://gabyfasane.app.n8n.cloud/workflow/IBZPPL8zNK1JKJ0k)
 - [Formulario de prueba](formulario-postulacion-m4.html)
 
   
