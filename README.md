@@ -81,13 +81,13 @@ La rama de error del Worker 3 fue configurada y revisada, pero no se realizó un
 
 ## Archivos
 
-- checkpoint4_gabriela_fasanella.json: workflow principal.
-- JSON del Worker 1_PERFIL_PUESTO.
-- JSON del Worker 2_PREPARAR_INGRESO.
-- JSON del Worker 3_REGISTRAR_POSTULACION.
-- formulario-postulacion-m4.html: formulario de prueba.
+- [Workflow principal](checkpoint4_gabriela_fasanella.json)
+- [Worker 1 — PERFIL_PUESTO](<Worker 1_PERFIL_PUESTO.json>)
+- [Worker 2 — PREPARAR_INGRESO](<Worker 2_PREPARAR_INGRESO.json>)
+- [Worker 3 — REGISTRAR_POSTULACION](<Worker 3_REGISTRAR_POSTULACION JSON Final.json>)
+- [Formulario de prueba](formulario-postulacion-m4.html)
 
-- 
+  
 ## Evidencia de conexiones
 
 Las siguientes capturas muestran las credenciales configuradas en n8n y el estado de conexión de HubSpot (CRM), Gmail y Slack.
