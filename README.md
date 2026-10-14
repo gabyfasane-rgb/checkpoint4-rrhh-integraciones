@@ -87,6 +87,17 @@ La rama de error del Worker 3 fue configurada y revisada, pero no se realizó un
 - JSON del Worker 3_REGISTRAR_POSTULACION.
 - formulario-postulacion-m4.html: formulario de prueba.
 
+- 
+## Evidencia de conexiones
+
+Las siguientes capturas muestran las credenciales configuradas en n8n y el estado de conexión de HubSpot (CRM), Gmail y Slack.
+
+- [Vista general de Credentials en n8n](<n8n Credentials.png>)
+- [HubSpot: conexión activa](<HubSpot Connection.png>)
+- [Gmail: conexión activa](<Gmail- Connection.png>)
+- [Slack: conexión activa](<Slack Connection.png>)
+
+
 ## Cómo reproducirlo
 
 1. Importar los tres Workers y el workflow principal en n8n.
